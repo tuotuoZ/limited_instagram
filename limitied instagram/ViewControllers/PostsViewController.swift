@@ -8,10 +8,13 @@
 
 import UIKit
 import Parse
+import AFNetworking
+
 
 class PostsViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
+    var posts: [PFObject] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +22,32 @@ class PostsViewController: UIViewController, UITableViewDataSource {
         // Do any additional setup after loading the view.
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 50
-
+        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.reloadPost), userInfo: nil, repeats: true)
+    }
+    
+    @objc func reloadPost() {
+       
+        
+        // construct query
+        let query = Post.query()
+        query?.includeKey("media")
+        query?.includeKey("author")
+        query?.addDescendingOrder("createdAt")
+        query?.limit = 20
+        
+        
+        // fetch data asynchronously
+        query?.findObjectsInBackground { (posts: [PFObject]?, error: Error?) in
+            if let posts = posts {
+                self.posts = posts as! [Post]
+                self.tableView.reloadData()
+                
+            }
+            else{
+                print(error?.localizedDescription)
+            }
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -27,9 +55,26 @@ class PostsViewController: UIViewController, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "feedCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "feedCell", for: indexPath) as! feedCell
+        if posts.count == 0 {
+            print("nothing")
+        }else{
+            let post = self.posts[0] as! Post
+            let postMedia = post.media as PFFile
+            postMedia.getDataInBackground{ (imageData: Data?, error: Error?) in
+                if (error == nil) {
+                    
+                    let image = UIImage(data: imageData!)
+                    cell.postPhotos.image = image
+                    
+                }
+            }
+            cell.postText.text = posts[indexPath.row]["caption"] as? String
+            
+        }
         return cell
     }
+    
     
     
     @IBAction func logOut(_ sender: Any) {

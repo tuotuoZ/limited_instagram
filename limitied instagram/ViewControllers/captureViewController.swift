@@ -10,19 +10,29 @@ import UIKit
 import Parse
 
 class captureViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
-
-    @IBOutlet weak var uploadCaption: UITextField!
-    @IBOutlet weak var uploadImageView: UIImageView!
+    @IBOutlet weak var imageHolder: UIImageView!
+    
+    @IBOutlet weak var comment: UITextField!
+    
     var uploadImage: UIImage = UIImage()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        imageHolder.isUserInteractionEnabled = true
         
         // Do any additional setup after loading the view.
         
     }
     
+    @IBAction func pickImage(_ sender: Any) {
+        pickPhoto()
+        
+    }
+    @IBAction func upload(_ sender: Any) {
+        postUserImage(image: imageHolder.image, withCaption: comment.text) { (sucess: Bool, error: Error?) in
+            print(error?.localizedDescription)
+        }
+    }
     
     // bug for calling a camara
     func takePhoto() {
@@ -48,7 +58,7 @@ class captureViewController: UIViewController, UIImagePickerControllerDelegate, 
         var originalImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
         var editedImage = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
 
-        
+        imageHolder.image = originalImage
         
         // print out the image size as a test
         dismiss(animated: true, completion: nil)
@@ -77,6 +87,7 @@ class captureViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         // Save object (following function will save the object in Parse asynchronously)
         post.saveInBackground(block: completion)
+        
     }
     
     /**

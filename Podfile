@@ -6,6 +6,7 @@ target 'limitied instagram' do
   use_frameworks!
 
   pod 'Parse'
+  pod 'AFNetworking'
 
   # Pods for limitied instagram
 

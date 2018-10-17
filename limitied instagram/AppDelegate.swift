@@ -24,6 +24,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 configuration.server = "http://limited-instagram.herokuapp.com/parse"
             })
         )
+        
+        // Persist the user if the user is logged in when the app starts
+       
+        
+        if PFUser.current() != nil {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            // view controller currently being set in Storyboard as default will be overridden
+            window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "login")
+        }
+        
+        
         return true
     }
 
@@ -50,5 +61,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+    
 }
 

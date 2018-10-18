@@ -18,6 +18,7 @@ class captureViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         imageHolder.isUserInteractionEnabled = true
         
         // Do any additional setup after loading the view.
@@ -30,7 +31,11 @@ class captureViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     @IBAction func upload(_ sender: Any) {
         postUserImage(image: imageHolder.image, withCaption: comment.text) { (sucess: Bool, error: Error?) in
-            print(error?.localizedDescription)
+            if sucess{
+                self.performSegue(withIdentifier: "finishUpload", sender: nil)
+            }else{
+                print(error?.localizedDescription)
+            }
         }
     }
     
@@ -84,6 +89,8 @@ class captureViewController: UIViewController, UIImagePickerControllerDelegate, 
         post.caption = caption!
         post.likesCount = 0
         post.commentsCount = 0
+        
+        post.date = Date().description
         
         // Save object (following function will save the object in Parse asynchronously)
         post.saveInBackground(block: completion)

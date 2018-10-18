@@ -14,17 +14,32 @@ import AFNetworking
 class PostsViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
-    var posts: [PFObject] = []
+    var posts: [Post] = []
+    var refreshControl: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
+        
+        
+
         // Do any additional setup after loading the view.
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 50
-        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.reloadPost), userInfo: nil, repeats: true)
+        tableView.estimatedRowHeight = 350
+        reloadPost()
+        
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControl.Event.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
     }
     
+    
+    @objc func refreshControlAction(_ refreshControl: UIRefreshControl) {
+        reloadPost()
+        print(posts.count)
+
+    }
+
     @objc func reloadPost() {
        
         
@@ -32,6 +47,7 @@ class PostsViewController: UIViewController, UITableViewDataSource {
         let query = Post.query()
         query?.includeKey("media")
         query?.includeKey("author")
+        query?.includeKey("createdAt")
         query?.addDescendingOrder("createdAt")
         query?.limit = 20
         
@@ -40,6 +56,7 @@ class PostsViewController: UIViewController, UITableViewDataSource {
         query?.findObjectsInBackground { (posts: [PFObject]?, error: Error?) in
             if let posts = posts {
                 self.posts = posts as! [Post]
+                self.refreshControl.endRefreshing()
                 self.tableView.reloadData()
                 
             }
@@ -51,7 +68,7 @@ class PostsViewController: UIViewController, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -59,7 +76,7 @@ class PostsViewController: UIViewController, UITableViewDataSource {
         if posts.count == 0 {
             print("nothing")
         }else{
-            let post = self.posts[0] as! Post
+            let post = self.posts[indexPath.row] as! Post
             let postMedia = post.media as PFFile
             postMedia.getDataInBackground{ (imageData: Data?, error: Error?) in
                 if (error == nil) {
@@ -69,9 +86,10 @@ class PostsViewController: UIViewController, UITableViewDataSource {
                     
                 }
             }
-            cell.postText.text = posts[indexPath.row]["caption"] as? String
+           cell.postText.text = posts[indexPath.row]["caption"] as? String
             
         }
+        
         return cell
     }
     
@@ -90,15 +108,16 @@ class PostsViewController: UIViewController, UITableViewDataSource {
         })
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "detail"{
+            let cell = sender as! feedCell
+            if let indexPath = tableView.indexPath(for: cell){
+                let post = posts[indexPath.row]
+                let detailViewController = segue.destination as! detailsViewController
+                detailViewController.post = post
+            }
+        }
     }
-    */
 
 }
 

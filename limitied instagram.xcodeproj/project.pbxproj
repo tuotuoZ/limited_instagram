@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		151AFF7384352BAE6DF365B3 /* Pods_limitied_instagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D34D970EFBFBA64A96883A /* Pods_limitied_instagram.framework */; };
+		1B3DAB8A21782AC4004720F5 /* detailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3DAB8921782AC4004720F5 /* detailsViewController.swift */; };
 		1B7F6FCC21742CAB00018CD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7F6FCB21742CAB00018CD3 /* AppDelegate.swift */; };
 		1B7F6FD121742CAB00018CD3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B7F6FCF21742CAB00018CD3 /* Main.storyboard */; };
 		1B7F6FD321742CAB00018CD3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B7F6FD221742CAB00018CD3 /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 
 /* Begin PBXFileReference section */
 		17F09F9D4983344F62CCEB01 /* Pods_limitied_instagramTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_limitied_instagramTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B3DAB8921782AC4004720F5 /* detailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = detailsViewController.swift; sourceTree = "<group>"; };
 		1B7F6FC821742CAB00018CD3 /* limitied instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "limitied instagram.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B7F6FCB21742CAB00018CD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1B7F6FD021742CAB00018CD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 				1B7F6FFE2176B98600018CD3 /* PostsViewController.swift */,
 				1B7F70002176C48D00018CD3 /* captureViewController.swift */,
 				1B7F70022176C49700018CD3 /* profileViewController.swift */,
+				1B3DAB8921782AC4004720F5 /* detailsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -429,6 +432,7 @@
 				1B7F6FFF2176B98600018CD3 /* PostsViewController.swift in Sources */,
 				1B7F70062176D80D00018CD3 /* feedCell.swift in Sources */,
 				1B7F70012176C48D00018CD3 /* captureViewController.swift in Sources */,
+				1B3DAB8A21782AC4004720F5 /* detailsViewController.swift in Sources */,
 				1B7F6FCC21742CAB00018CD3 /* AppDelegate.swift in Sources */,
 				1B7F70032176C49700018CD3 /* profileViewController.swift in Sources */,
 				1B7F6FFA2174331A00018CD3 /* loginInViewController.swift in Sources */,
